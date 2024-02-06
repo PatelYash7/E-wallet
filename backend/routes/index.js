@@ -1,10 +1,7 @@
 const express = require('express');
-const  Router = express.Router();
+const  router = express.Router();
+const UserRoute = require('./UserRoute');
 
-Router.get('/', (req, res) => {
-    res.json({
-        message: "Testing Router"
-    })
-})
+router.use('/user',UserRoute);
 
-module.exports =Router;
+module.exports =router;
