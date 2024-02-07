@@ -39,10 +39,24 @@ const UserSchema = Schema({
         minLength:3
     },
 })
+const accountSchema = Schema({
+    userId:{
+        type:Schema.Types.ObjectId,
+        ref:"User",
+        required:true
+    },
+    balance:{
+        type:Number,
+        default:0,
+        required:true
+    }
+})
 
-
+//Models
 const User = model('User',UserSchema);
+const Account = model('Account',accountSchema);
 module.exports = {
     Database,
-    User
+    User,
+    Account
 }

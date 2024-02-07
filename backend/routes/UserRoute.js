@@ -3,7 +3,7 @@ const router = express.Router();
 const { signupSchema, signinSchema, updateBody } = require('./zod')
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config');
-const { User } = require('../db/database');
+const { User, Account } = require('../db/database');
 const { authMiddleware } = require('../middleware/middleware');
 
 
@@ -34,8 +34,12 @@ router.post('/signup', async (req, res) => {
     }
     try {
         const user = await User.create(parsedData.data);
-        // const user = await User.create(userObj);
         const userId = user._id;
+            //Creating a Bank Account 
+        await Account.create({
+            userId,
+            balance: 1+ Math.random()*100000
+        })
         const token = jwt.sign({ userId }, JWT_SECRET);
         res.json({
             message: "User Created Successfully",
@@ -95,6 +99,28 @@ router.put('/', authMiddleware, async (req, res) => {
     } catch (err) {
         console.log(err)
     }
+})
+
+//Find Friends
+router.get('/bulk',authMiddleware,async(req,res)=>{
+    const filter = req.query.filter || '';
+    const user = await User.find({
+        $or:[{
+            firstname:{"$regex":filter}
+        },{
+            lastname:{"$regex":filter}
+        }]
+    })
+
+    res.status(200).json({
+        user:user.map(user=>({
+            username:user.username,
+            firstname:user.firstname,
+            lastname:user.lastname,
+            _id:user._id
+        }))
+    })
+    
 })
 
 
