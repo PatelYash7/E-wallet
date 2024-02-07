@@ -18,7 +18,7 @@ const UserSchema = Schema({
         trim:true,
         lowercase:true,
         minLength:3,
-        maxLength:30 
+        maxLength:30,
     },
     firstname:{
         type:String,
