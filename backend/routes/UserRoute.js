@@ -30,7 +30,6 @@ router.post('/signup', async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        console.log("first hewlll")
     }
     try {
         const user = await User.create(parsedData.data);
@@ -38,7 +37,7 @@ router.post('/signup', async (req, res) => {
             //Creating a Bank Account 
         await Account.create({
             userId,
-            balance: 1+ Math.random()*100000
+            balance: Math.ceil(1+ Math.random()*100000)
         })
         const token = jwt.sign({ userId }, JWT_SECRET);
         res.json({

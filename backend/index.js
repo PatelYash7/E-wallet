@@ -6,7 +6,6 @@ const app = express();
 //Routes
 const rootRouter =require('./routes/index');
 const accountRouter = require('./routes/Account');
-console.log(accountRouter)
 db
 app.use(bodyParser.json());
 app.use(cors());
