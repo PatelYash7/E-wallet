@@ -16,7 +16,7 @@ function Signin() {
             <InputBox type={"email"} label={"Email"} placeholder={"abc@gmail.com"}/>
             <InputBox type={"text"} label={"Password"} placeholder={""}/>
             <Button label={"Signin"} onClick={console.log("Signin")}/>
-            <BottomTextIn label={"New User ?"} heading={"signup"}/>
+            <BottomTextIn label={"New User ?"} heading={"signup"}/> 
         </div>
     </div>
   )
@@ -25,7 +25,7 @@ export function BottomTextIn({label,heading}){
     return <div className='flex items-center justify-center p-2'>
     <p>
         {label}
-        <Link to={'/signup'}> {heading}</Link>
+        <Link to={'/signup'} className='underline pl-1 pb-1'> {heading}</Link>
     </p>
 </div>
 }

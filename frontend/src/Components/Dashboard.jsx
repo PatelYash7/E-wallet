@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardTopBar from './Component/DashboardTopBar'
-import { Subheading } from './Component/Subheading'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Axios from 'axios';
+
 
 function Dashboard() {
     const Balance = 5000;
+    const [users,setUsers]=useState([]);
+    const [filter,setFilter]=useState("");
+    
+    //Debouncing
+
+
+    useEffect(()=>{
+        Axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter,
+        {headers: {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWM0NmVlZjg0NTg5YjlmMGNmODVlMDMiLCJpYXQiOjE3MDczNzIyNzF9.KPm30JQg3fbH8r1NlMSWbCv7uTv-Um-had0lsGhIbFE'}}
+        ).then((response)=>{
+            console.log(response.data.user)
+            setUsers(response.data.user);
+        })
+        console.log(users)
+        
+    },[filter])
   return (
     <div className=''>
         <DashboardTopBar user={"User"} />
@@ -17,34 +34,35 @@ function Dashboard() {
             </div>
         </div>
         <div className='flex p-4 '>
-            <input className='w-full p-2 border-gray-200 border-2 rounded-lg' type="text" placeholder='Find Users'/>
+            <input onChange={(e) => {
+                setFilter(e.target.value)
+            }}className='w-full p-2 border-gray-200 border-2 rounded-lg' type="text" placeholder='Find Users'/>
         </div>
         <div className='mt-4'>
-            <UserProfile userName={"Yash Patel"}/>
-            <UserProfile userName={"Yash Patel"}/>
-            <UserProfile userName={"Yash Patel"}/>
-            <UserProfile userName={"Yash Patel"}/>
-            <UserProfile userName={"Yash Patel"}/>
+            {users.map((user)=>(
+                <UserProfile key={user._id} id={user._id} userName={user.firstname} />
+            ))}
         </div>
     </div>
   )
 }
-function UserProfile({userName}) {
+function UserProfile({userName,id}) {
+
+    const navigate = useNavigate();
     return(
-        <div className='flex justify-between gap-4 px-6 py-2'>
+        <div className='flex justify-between gap-4 px-6 py-4'>
             <div className='flex justify-center items-center gap-3'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
+                <div className='bg-green-500 rounded-full px-4 py-2 text-white'>
+                    {userName[0].toUpperCase()}   
+                </div>
                 <p>{userName}</p>
             </div>
             <div className='bg-black rounded-lg p-2 text-white'>
-            <Link to={"/send"}>
-                <button>Send Money</button>
-            </Link>
+            {/* <Link to={"/send"}> */}
+                <button onClick={(e)=>{navigate("/send?id="+id+ "&name="+userName)}}>Send Money</button>
+            {/* </Link> */}
             </div>
         </div>
     )
 }
-
 export default Dashboard
