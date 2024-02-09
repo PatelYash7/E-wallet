@@ -39,16 +39,13 @@ router.post('/transfer',authMiddleware,async (req,res)=>{
     }
     //Transfer Amount
     try{
-        
-    await sendAccount.updateOne({userId:req.userId},{$inc:{balance:-amount}}) 
+    await sendAccount.updateOne({userId:req.userId}, {$inc:{balance:-amount}}) 
     .session(session).exec();
-    await toAccount.updateOne({userId:to},{$inc:{balance:amount}})
+    await toAccount.updateOne({userId:to}, {$inc:{balance:amount}})
     .session(session).exec();
-
     }catch(e){
         console.log(e)
     }
-    
     //Commit Transaction 
     (await session).commitTransaction();
     console.log(sendAccount.balance)
@@ -58,8 +55,5 @@ router.post('/transfer',authMiddleware,async (req,res)=>{
         message:"Transfer Successful"
     });
 })
-
-
-
 
 module.exports=router;
