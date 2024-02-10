@@ -5,6 +5,7 @@ import { InputBox } from './Component/InputBox'
 import { Button } from './Component/Button'
 import { BottomText } from './Component/BottomText'
 import Axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 
 function Signup() {
@@ -13,6 +14,7 @@ function Signup() {
     const [lastname,setLastname]=useState("");
     const [username,setUsername]=useState("");
     const [password,setPassword]=useState("");
+    const navigate = useNavigate();
     
     
   return (
@@ -31,8 +33,9 @@ function Signup() {
                     lastname,
                     password
                 });
-                console.log(response);
                 localStorage.setItem("token",response.data.token);
+                
+                navigate("/dashboard")
             }}/>
             <BottomText label={"Already have an account?"} heading={"Signin"}/>
         </div>

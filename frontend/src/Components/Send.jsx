@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { Heading } from './Component/Heading'
-import { InputBox } from './Component/InputBox'
 import { useSearchParams } from 'react-router-dom'
 import Axios from 'axios'
 
-function Send({ username }) {
+function Send() {
     const[amount,setAmount]=useState(0);
     const [searchParam] = useSearchParams();
     const id = searchParam.get('id');
@@ -35,8 +34,9 @@ function Send({ username }) {
                                 amount
                             },{
                                 headers: {
-                                    Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWM0NmVlZjg0NTg5YjlmMGNmODVlMDMiLCJpYXQiOjE3MDczNzIyNzF9.KPm30JQg3fbH8r1NlMSWbCv7uTv-Um-had0lsGhIbFE"
+                                    Authorization: "Bearer " + localStorage.getItem("token")
                                 }})
+                            // setAmount(0)    
                         }} label={"Send Money"} />
                     </div>
                 </div>

@@ -11,17 +11,15 @@ function Dashboard() {
     
     //Debouncing
 
-
+    const dedounced =useDebounce(filter,300);
     useEffect(()=>{
-        Axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter,
-        {headers: {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWM0NmVlZjg0NTg5YjlmMGNmODVlMDMiLCJpYXQiOjE3MDczNzIyNzF9.KPm30JQg3fbH8r1NlMSWbCv7uTv-Um-had0lsGhIbFE'}}
+        Axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + dedounced,
+        {headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}}
         ).then((response)=>{
-            console.log(response.data.user)
             setUsers(response.data.user);
-        })
-        console.log(users)
-        
-    },[filter])
+            console.log(response.data.user);
+        })        
+    },[dedounced])
   return (
     <div className=''>
         <DashboardTopBar user={"User"} />
@@ -65,4 +63,16 @@ function UserProfile({userName,id}) {
         </div>
     )
 }
+function useDebounce(value,n){
+    const[dvalue,setdvalue]=useState(value);
+    useEffect(()=>{
+      const time=  setTimeout(()=>{
+        setdvalue(value);
+      },n)
+      return ()=>{
+        clearInterval(time)
+      }
+    },[value])
+    return dvalue;
+  }
 export default Dashboard
