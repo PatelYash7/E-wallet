@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
 import './index.css'
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import Signup from './Components/Signup.jsx'
@@ -9,6 +8,10 @@ import Send from './Components/Send.jsx'
 import Dashboard from './Components/Dashboard.jsx'
 
 const router= createBrowserRouter([
+  {
+    path:'/',
+    element:<Signin/>
+  },
   {
     path:'/signup',
     element:<Signup/>
