@@ -6,7 +6,13 @@ const app = express();
 //Routes
 const rootRouter =require('./routes/index');
 const accountRouter = require('./routes/Account');
-db
+
+try {
+     db
+} catch (error) {
+    console.log("Error Happened while connecting to Database");
+    console.log(error);
+}
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/api/v1', rootRouter);
